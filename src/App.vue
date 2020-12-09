@@ -1,32 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <Header />
+    <router-view></router-view>
   </div>
 </template>
+<script>
+import { mapGetters } from "vuex";
+import Header from "@/components/Header";
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+export default {
+  name: "app",
+  components: {
+    Header,
+  },
+  computed: {
+    ...mapGetters({
+      isLoggedIn: "isLoggedIn",
+      user: "getUser",
+    }),
+  },
+  mounted: function() {
+    if (localStorage.getItem("isLoggedIn") !== null) {
+      this.$store.state.login.isLoggedIn = JSON.parse(
+        localStorage.getItem("isLoggedIn")
+      );
+      this.$store.state.login.user = JSON.parse(localStorage.getItem("user"));
+    } else return;
+  },
+};
+</script>
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<style></style>
